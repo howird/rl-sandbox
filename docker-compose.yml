@@ -1,0 +1,22 @@
+services:
+  hf:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+
+    runtime: nvidia
+    command: /bin/bash -c "jupyter notebook --no-browser --allow-root --ip 0.0.0.0"
+
+    ports:
+      - "8886:8888"
+    volumes:
+      - ./src:/root/src
+
+    ipc: host
+    tty: True
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
